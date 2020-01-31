@@ -1,0 +1,32 @@
+{{/* if (not .IsNamedParams ) */}}
+	{{/* errorf "requires named parameter: content" .Position */}}
+{{/* end */}}
+
+
+{{/* if (not (isset .Params "content")) */}}
+	{{/* errorf "missing value for param 'content': %s" .Position */}}
+{{/* end */}}
+{{ $uid := (print "privacyBlock" (string $.Ordinal)) }}	
+<script lang="js" type="text/javascript">
+	function loadContent{{ safeJS $uid }}() {
+		preview = document.getElementById({{ $uid | printf "preview_%s" }});
+		preview.classList.add("privacy-blocks-preview-hidden");
+		element = document.getElementById({{$uid}});
+		element.innerHTML = {{ $.Inner }};
+	}	
+</script>
+<div class="privacy-blocks-container"
+     style="width: 100%;">
+	<div id="{{$uid}}">
+	</div>
+	<div id="{{ safeJS ( $uid | printf "preview_%s") }}" class="privacy-blocks-preview">
+		<Button style="font-size: large;" class="privacy-blocks-button"
+			onClick="loadContent{{ safeJS $uid }}()">Load Content</Button>
+		<img style="filter: blur(5px) grayscale(25%);" src="/img/privacy-preview.png"/>
+	</div>
+</div>
+
+
+
+
+
